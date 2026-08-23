@@ -42,17 +42,14 @@ public class FoodOrder {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal subtotal = BigDecimal.ZERO;
 
     @Column(name = "price_multiplier", nullable = false, precision = 6, scale = 3)
     private BigDecimal priceMultiplier = BigDecimal.ONE;
 
-    @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "total_price", nullable = false, precision = 12, scale = 2)
     private BigDecimal totalPrice = BigDecimal.ZERO;
-
-    @Version
-    private Long version;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();

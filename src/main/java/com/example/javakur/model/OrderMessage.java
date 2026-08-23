@@ -25,7 +25,7 @@ public class OrderMessage {
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, length = 2000)
     private String content;
 
     @Column(name = "sent_at", nullable = false, updatable = false)

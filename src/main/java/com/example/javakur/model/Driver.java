@@ -16,8 +16,9 @@ public class Driver extends User {
     @Column(name = "vehicle_type", length = 50)
     private VehicleType vehicleType;
 
-    public Driver(String login, String passwordHash, String name, String surname, VehicleType vehicleType) {
-        super(login, passwordHash, name, surname, UserRole.DRIVER);
+    public Driver(String username, String passwordHash, String name, String surname,
+                  String email, VehicleType vehicleType) {
+        super(username, passwordHash, name, surname, email, UserRole.DRIVER);
         this.vehicleType = vehicleType;
     }
 

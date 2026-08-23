@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RestaurantOwner extends User {
-    public RestaurantOwner(String login, String passwordHash, String name, String surname) {
-        super(login, passwordHash, name, surname, UserRole.RESTAURANT_OWNER);
+    public RestaurantOwner(String username, String passwordHash, String name, String surname, String email) {
+        super(username, passwordHash, name, surname, email, UserRole.RESTAURANT_OWNER);
     }
 
     @Override

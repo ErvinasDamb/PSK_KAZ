@@ -13,16 +13,21 @@ public class StartHibernate {
         System.out.println("=== Starting Hibernate with MySQL ===");
 
         EntityManager em = null;
+        boolean successful = false;
         try {
             em = HibernateUtil.getEntityManager();
 
             Object result = em.createNativeQuery("SELECT 1").getSingleResult();
             System.out.println("MySQL connection OK. SELECT 1 = " + result);
             System.out.println("Hibernate schema initialization completed.");
+            successful = true;
         } catch (Exception e) {
             System.err.println("Hibernate/MySQL initialization FAILED.");
-            e.printStackTrace();
-            System.exit(1);
+            e.printStackTrace(System.err);
+            Throwable rootCause = findRootCause(e);
+            System.err.println();
+            System.err.println("Root cause: " + rootCause.getClass().getName()
+                    + ": " + rootCause.getMessage());
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -30,6 +35,18 @@ public class StartHibernate {
             HibernateUtil.shutdown();
         }
 
+        if (!successful) {
+            System.exit(1);
+        }
+
         System.out.println("=== Hibernate initialized successfully ===");
+    }
+
+    private static Throwable findRootCause(Throwable throwable) {
+        Throwable result = throwable;
+        while (result.getCause() != null && result.getCause() != result) {
+            result = result.getCause();
+        }
+        return result;
     }
 }

@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Admin extends User {
-    public Admin(String login, String passwordHash, String name, String surname) {
-        super(login, passwordHash, name, surname, UserRole.ADMIN);
+    public Admin(String username, String passwordHash, String name, String surname, String email) {
+        super(username, passwordHash, name, surname, email, UserRole.ADMIN);
     }
 
     @Override
