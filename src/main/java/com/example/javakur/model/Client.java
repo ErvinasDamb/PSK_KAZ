@@ -20,8 +20,9 @@ public class Client extends User {
     @Column(name = "bonus_points")
     private int bonusPoints;
 
-    public Client(String login, String passwordHash, String name, String surname, String deliveryAddress) {
-        super(login, passwordHash, name, surname, UserRole.CLIENT);
+    public Client(String username, String passwordHash, String name, String surname,
+                  String email, String deliveryAddress) {
+        super(username, passwordHash, name, surname, email, UserRole.CLIENT);
         this.deliveryAddress = deliveryAddress;
     }
 

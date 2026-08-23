@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(name = "uq_users_username", columnNames = "username"),
+        @UniqueConstraint(name = "uq_users_email", columnNames = "email")
+})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING, length = 31)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,10 +21,10 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", unique = true, nullable = false, length = 100)
-    private String login;
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
 
-    @Column(name = "password_hash", nullable = false, length = 100)
+    @Column(name = "password_hash", nullable = false, length = 60)
     private String passwordHash;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -32,7 +33,7 @@ public abstract class User {
     @Column(name = "surname", nullable = false, length = 100)
     private String surname;
 
-    @Column(name = "email", length = 255)
+    @Column(name = "email", nullable = false, length = 254)
     private String email;
 
     @Column(name = "phone_number", length = 30)
@@ -42,29 +43,18 @@ public abstract class User {
     @Column(name = "role", nullable = false, length = 50)
     private UserRole role;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "is_active", nullable = false)
-    private boolean active = true;
-
-    protected User(String login, String passwordHash, String name, String surname, UserRole role) {
-        this.login = login;
+    protected User(String username, String passwordHash, String name, String surname,
+                   String email, UserRole role) {
+        this.username = username;
         this.passwordHash = passwordHash;
         this.name = name;
         this.surname = surname;
+        this.email = email;
         this.role = role;
-        this.createdAt = LocalDateTime.now();
-        this.active = true;
-    }
-
-    @PrePersist
-    protected void ensureCreatedAt() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
     }
 
     @Override
     public String toString() {
-        return name + " " + surname + " (" + login + ")";
+        return name + " " + surname + " (" + username + ")";
     }
 }

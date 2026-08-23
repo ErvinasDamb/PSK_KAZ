@@ -15,13 +15,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public RestaurantOwner createRestaurantOwner(String login, String plainPassword, String name, String surname) {
-        validateCommonUserFields(login, plainPassword, name, surname);
-        if (userRepository.findByLogin(login).isPresent()) {
-            throw new ValidationException("Login is already in use");
+    public RestaurantOwner createRestaurantOwner(String username, String plainPassword, String name,
+                                                  String surname, String email) {
+        validateCommonUserFields(username, plainPassword, name, surname, email);
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new ValidationException("Username is already in use");
         }
         RestaurantOwner owner = new RestaurantOwner(
-                login.trim(), PasswordUtil.hashPassword(plainPassword), name.trim(), surname.trim());
+                username.trim(), PasswordUtil.hashPassword(plainPassword), name.trim(), surname.trim(), email.trim());
         return (RestaurantOwner) userRepository.save(owner);
     }
 
@@ -29,10 +30,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void validateCommonUserFields(String login, String password, String name, String surname) {
-        if (login == null || login.isBlank()) throw new ValidationException("Login cannot be blank");
+    private void validateCommonUserFields(String username, String password, String name, String surname, String email) {
+        if (username == null || username.isBlank()) throw new ValidationException("Username cannot be blank");
         if (password == null || password.length() < 8) throw new ValidationException("Password must contain at least 8 characters");
         if (name == null || name.isBlank()) throw new ValidationException("Name cannot be blank");
         if (surname == null || surname.isBlank()) throw new ValidationException("Surname cannot be blank");
+        if (email == null || email.isBlank()) throw new ValidationException("Email cannot be blank");
     }
 }

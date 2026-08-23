@@ -5,7 +5,7 @@ public enum VehicleType {
     MOTORCYCLE("Motociklas"),
     BICYCLE("Dviratis"),
     SCOOTER("Paspirtukas"),
-    VAN("Furgonas");
+    OTHER("Kita");
 
     private final String displayName;
 

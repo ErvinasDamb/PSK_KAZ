@@ -14,15 +14,13 @@ public final class HibernateUtil {
 
     private static final String PERSISTENCE_UNIT_NAME = "FoodDeliveryPU";
     private static final String DB_PROPERTIES_FILE = "db.properties";
-
-    private static final EntityManagerFactory entityManagerFactory =
-            createEntityManagerFactory();
+    private static EntityManagerFactory entityManagerFactory;
 
     private HibernateUtil() {
         // Utility class - instances are not needed.
     }
 
-    private static EntityManagerFactory createEntityManagerFactory() {
+    private static EntityManagerFactory createProductionEntityManagerFactory() {
         Properties dbProperties = loadDatabaseProperties();
 
         Map<String, Object> persistenceProperties = new HashMap<>();
@@ -82,12 +80,26 @@ public final class HibernateUtil {
     }
 
     public static EntityManager getEntityManager() {
-        return entityManagerFactory.createEntityManager();
+        return getProductionEntityManagerFactory().createEntityManager();
     }
 
-    public static void shutdown() {
-        if (entityManagerFactory.isOpen()) {
-            entityManagerFactory.close();
+    public static EntityManagerFactory getTestEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory("FoodDeliveryTestPU");
+    }
+
+    public static synchronized void shutdown() {
+        if (entityManagerFactory != null) {
+            if (entityManagerFactory.isOpen()) {
+                entityManagerFactory.close();
+            }
+            entityManagerFactory = null;
         }
+    }
+
+    private static synchronized EntityManagerFactory getProductionEntityManagerFactory() {
+        if (entityManagerFactory == null || !entityManagerFactory.isOpen()) {
+            entityManagerFactory = createProductionEntityManagerFactory();
+        }
+        return entityManagerFactory;
     }
 }

@@ -38,9 +38,9 @@ public class Review {
     private User reviewedUser;
 
     @Column(nullable = false)
-    private int rating;
+    private byte rating;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 2000)
     private String comment;
 
     @Column(name = "created_at", nullable = false, updatable = false)
