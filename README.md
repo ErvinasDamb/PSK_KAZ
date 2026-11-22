@@ -10,7 +10,7 @@ Technologijos: Java 21, Maven, JavaFX/FXML, Spring Boot, Hibernate/JPA, MySQL,
 Android Java/XML, JUnit 5 ir Mockito.
 
 > Greitam kasdieniam paleidimui naudokite
-> [PALEIDIMO_INSTRUKCIJA.md](PALEIDIMO_INSTRUKCIJA.md).
+> [PALEIDIMO_INSTRUKCIJA.md](docs/PALEIDIMO_INSTRUKCIJA.md).
 
 ## 1. Reikalavimai kompiuteriui
 
